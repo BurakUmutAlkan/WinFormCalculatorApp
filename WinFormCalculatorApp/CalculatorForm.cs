@@ -18,9 +18,7 @@ namespace WinFormCalculatorApp
         public CalculatorForm()
         {
             InitializeComponent();
-            lblCalculator.Text = "0";
-            result = 0;
-            calculationCounter = 0;
+            DoInitialAssignments();
         }
 
         private void CalculatorForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -30,90 +28,149 @@ namespace WinFormCalculatorApp
 
         private void btnZero_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text.Contains(",") || lblCalculator.Text != "0")
-                lblCalculator.Text += "0";
+            PrintNumberOnCalculatorScreen("0");
         }
 
         private void btnOne_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "1";
-            else
-                lblCalculator.Text += "1";
+            PrintNumberOnCalculatorScreen("1");
         }
 
         private void btnTwo_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "2";
-            else
-                lblCalculator.Text += "2";
+            PrintNumberOnCalculatorScreen("2");
         }
 
         private void btnThree_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "3";
-            else
-                lblCalculator.Text += "3";
+            PrintNumberOnCalculatorScreen("3");
         }
 
         private void btnFour_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "4";
-            else
-                lblCalculator.Text += "4";
+            PrintNumberOnCalculatorScreen("4");
         }
 
         private void btnFive_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "5";
-            else
-                lblCalculator.Text += "5";
+            PrintNumberOnCalculatorScreen("5");
         }
 
         private void btnSix_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "6";
-            else
-                lblCalculator.Text += "6";
+            PrintNumberOnCalculatorScreen("6");
         }
 
         private void btnSeven_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "7";
-            else
-                lblCalculator.Text += "7";
+            PrintNumberOnCalculatorScreen("7");
         }
 
         private void btnEight_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "8";
-            else
-                lblCalculator.Text += "8";
+            PrintNumberOnCalculatorScreen("8");
         }
 
         private void btnNine_Click(object sender, EventArgs e)
         {
-            if (lblCalculator.Text == "0")
-                lblCalculator.Text = "9";
-            else
-                lblCalculator.Text += "9";
+            PrintNumberOnCalculatorScreen("9");
         }
 
         private void btnReset_Click(object sender, EventArgs e)
+        {
+            DoInitialAssignments();
+        }
+
+        private void btnBackspace_Click(object sender, EventArgs e)
+        {
+            ExecuteBackspace();
+        }
+
+        private void btnDecimal_Click(object sender, EventArgs e)
+        {
+            PrintNumberOnCalculatorScreen(",");
+        }
+
+        private void btnValueInvertion_Click(object sender, EventArgs e)
+        {
+            ExecuteValueInvertion();
+        }
+
+        private void btnAddition_Click(object sender, EventArgs e)
+        {
+            ExecuteOperation("+");
+        }
+
+        private void btnSubstraction_Click(object sender, EventArgs e)
+        {
+            ExecuteOperation("-");
+        }
+
+        private void btnMultiplication_Click(object sender, EventArgs e)
+        {
+            ExecuteOperation("*");
+        }
+
+        private void btnDivision_Click(object sender, EventArgs e)
+        {
+            ExecuteOperation("/");
+        }
+
+        private void btnSqrt_Click(object sender, EventArgs e)
+        {
+            ExecuteOperation("sqrt");   
+        }
+
+        private void btnSquare_Click(object sender, EventArgs e)
+        {
+            ExecuteOperation("^2");
+        }
+
+        private void btnInvertion_Click(object sender, EventArgs e)
+        {
+            ExecuteOperation("1/");
+        }
+
+        private void btnResult_Click(object sender, EventArgs e)
+        {
+            lblCalculator.Text = result.ToString();
+        }
+
+        #region Methods
+
+        private void PrintNumberOnCalculatorScreen(string value)
+        {
+            if (value == "0")
+            {
+                if (lblCalculator.Text.Contains(",") || lblCalculator.Text != "0")
+                    lblCalculator.Text += value;
+                else
+                    return;
+            }
+            else if (value == ",")
+            {
+                if (!lblCalculator.Text.Contains(","))
+                    lblCalculator.Text += value;
+                else
+                    return;
+            }
+            else
+            {
+                if (lblCalculator.Text == "0")
+                    lblCalculator.Text = value;
+                else
+                    lblCalculator.Text += value;
+            }
+        }
+
+        private void DoInitialAssignments()
         {
             lblCalculator.Text = "0";
             result = 0;
             calculationCounter = 0;
         }
 
-        private void btnBackspace_Click(object sender, EventArgs e)
+        private void ExecuteBackspace()
         {
             string calculatorScreenText = lblCalculator.Text;
             double number = Convert.ToDouble(calculatorScreenText);
@@ -126,113 +183,76 @@ namespace WinFormCalculatorApp
                 lblCalculator.Text = calculatorScreenText.Substring(0, calculatorScreenText.Length - 1);
         }
 
-        private void btnDecimal_Click(object sender, EventArgs e)
-        {
-            if (!lblCalculator.Text.Contains(","))
-                lblCalculator.Text += ",";
-        }
-
-        private void btnValueInvertion_Click(object sender, EventArgs e)
+        private void ExecuteValueInvertion()
         {
             double number = Convert.ToDouble(lblCalculator.Text);
             lblCalculator.Text = (number * (-1)).ToString();
         }
 
-        private void btnAddition_Click(object sender, EventArgs e)
+        private void ExecuteOperation(string operation)
         {
             double number = Convert.ToDouble(lblCalculator.Text);
-            if (calculationCounter == 0 && number != 0)
-                result = number;
-            else
-                result += number;
-            calculationCounter++;
-            lblCalculator.Text = "0";
-        }
 
-        private void btnSubstraction_Click(object sender, EventArgs e)
-        {
-            double number = Convert.ToDouble(lblCalculator.Text);
-            if (calculationCounter == 0 && number != 0)
-                result = number;
-            else
-                result -= number;
-            calculationCounter++;
-            lblCalculator.Text = "0";
-        }
-
-        private void btnMultiplication_Click(object sender, EventArgs e)
-        {
-            double number = Convert.ToDouble(lblCalculator.Text);
-            if (calculationCounter != 0 && number == 0)
-                MessageBox.Show("The zero cannot multiply by zero. Please try a different value.");
-            else if (calculationCounter == 0 && number != 0)
-                result = number;
-            else
-                result *= number;
-
-            calculationCounter++;
-            lblCalculator.Text = "0";
-        }
-
-        private void btnDivision_Click(object sender, EventArgs e)
-        {
-            double number = Convert.ToDouble(lblCalculator.Text);
-            if (calculationCounter != 0 && number == 0)
-                MessageBox.Show("The dividend cannot be zero. Please try a different value.");
-            else if (calculationCounter == 0 && number != 0)
-                result = number;
-            else
-                result /= number;
-
-            calculationCounter++;
-            lblCalculator.Text = "0";
-        }
-
-        private void btnSqrt_Click(object sender, EventArgs e)
-        {
-            double number = Convert.ToDouble(lblCalculator.Text);
-            if (calculationCounter != 0 && number == 0)
-                MessageBox.Show("The zero cannot have a square root. Please try a different value.");
-            else if (calculationCounter == 0 && number != 0)
-                result = number;
-            else
-                result = Math.Sqrt(number);
-
-            calculationCounter++;
-            lblCalculator.Text = "0";
-        }
-
-        private void btnSquare_Click(object sender, EventArgs e)
-        {
-            double number = Convert.ToDouble(lblCalculator.Text);
-            if (calculationCounter != 0 && number == 0)
-                MessageBox.Show("The zero cannot have a power of two. Please try a different value.");
-            else if (calculationCounter == 0 && number != 0)
-                result = number;
-            else
-                result = Math.Pow(number, 2);
+            switch (operation)
+            {
+                case "+":
+                    if (calculationCounter == 0 && number != 0)
+                        result = number;
+                    else
+                        result += number;
+                    break;
+                case "-":
+                    if (calculationCounter == 0 && number != 0)
+                        result = number;
+                    else
+                        result -= number;
+                    break;
+                case "*":
+                    if (calculationCounter != 0 && number == 0)
+                        MessageBox.Show("The zero cannot multiply by zero. Please try a different value.");
+                    else if (calculationCounter == 0 && number != 0)
+                        result = number;
+                    else
+                        result *= number;
+                    break;
+                    case "/":
+                    if (calculationCounter != 0 && number == 0)
+                        MessageBox.Show("The dividend cannot be zero. Please try a different value.");
+                    else if (calculationCounter == 0 && number != 0)
+                        result = number;
+                    else
+                        result /= number;
+                    break;
+                case "sqrt":
+                    if (calculationCounter != 0 && number == 0)
+                        MessageBox.Show("The zero cannot have a square root. Please try a different value.");
+                    else if (calculationCounter == 0 && number != 0)
+                        result = number;
+                    else
+                        result = Math.Sqrt(number);
+                    break;
+                case "^2":
+                    if (calculationCounter != 0 && number == 0)
+                        MessageBox.Show("The zero cannot have a power of two. Please try a different value.");
+                    else if (calculationCounter == 0 && number != 0)
+                        result = number;
+                    else
+                        result = Math.Pow(number, 2);
+                    break;
+                case "1/":
+                    if (calculationCounter != 0 && number == 0)
+                        MessageBox.Show("The dividend cannot be zero. Please try a different value.");
+                    else if (calculationCounter == 0 && number != 0)
+                        result = number;
+                    else
+                        result = 1 / number;
+                    break;
+            }
 
             calculationCounter++;
             lblCalculator.Text = "0";
         }
 
-        private void btnInvertion_Click(object sender, EventArgs e)
-        {
-            double number = Convert.ToDouble(lblCalculator.Text);
-            if (calculationCounter != 0 && number == 0)
-                MessageBox.Show("The dividend cannot be zero. Please try a different value.");
-            else if (calculationCounter == 0 && number != 0)
-                result = number;
-            else
-                result = 1 / number;
-
-            calculationCounter++;
-            lblCalculator.Text = "0";
-        }
-
-        private void btnResult_Click(object sender, EventArgs e)
-        {
-            lblCalculator.Text = result.ToString();
-        }
+        #endregion
     }
 }
